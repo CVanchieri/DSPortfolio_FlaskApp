@@ -1,0 +1,6 @@
+Fkask app Notes
+
+
+## heroku ##
+
+install + login -> heroku login
