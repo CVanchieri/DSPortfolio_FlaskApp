@@ -7,8 +7,9 @@ name = "pypi"
 psycopg2-binary = "*"
 flask = "*"
 pandas = "*"
-decouple = "*"
 python-dotenv = "*"
+gunicorn = "*"
+ipython = "*"
 
 [dev-packages]
 
