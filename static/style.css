@@ -1,12 +1,18 @@
-body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;}
+body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+                  color: #3f3f3f;
+                  margin-bottom: 1px;}
 a               { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
                   margin: 10;
                   color: #00ff15; }
-h1              { color: #dd9425;
-                  margin: 0; }
+h1              { color: #814444;
+                  margin: 0;
+                  margin-bottom: 5px;
+                  margin-top: 5px; }
 h2              { font-size: 1.2em;
                   margin: 0;
-                  color: #be523f; }
+                  color: #465880;
+                  margin-bottom: 5px;
+                  margin-top: 5px; }
 
 div.ex1 {
   background-color: lightblue;
