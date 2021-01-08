@@ -10,37 +10,13 @@ import plotly.graph_objects as go
 # FalconSQL Login https://api.plot.ly/
 
 """Create and configure an instance of the Flask application"""
-#print( "connecting to database")
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# DB.init_app(app)
-
-# AWSdatabase = os.getenv("AWSDATABASE")
-# AWSuser = os.getenv("AWSUSER")
-# AWSpassword = os.getenv("AWSPASSWORD")
-# AWShost = os.getenv("AWSHOST")
-# AWSport = os.getenv("AWSPORT")
-
-# ## connect to AWS database ###
-# connection = psycopg2.connect(database=AWSdatabase,
-#                             user=AWSuser,
-#                             password=AWSpassword,
-#                             host=AWShost,
-#                             port=AWSport)
-# print("connected to database")
-
-# cur = connection.cursor()
-### ###
 app = Flask(__name__)
 
 # app.config['TESTING'] = True
-
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 # app.config['STATIC_AUTO_RELOAD'] = True
-
 # app.run(debug=True)
-
 
 @app.route('/')
 def root():
