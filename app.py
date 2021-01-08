@@ -34,12 +34,12 @@ import plotly.graph_objects as go
 ### ###
 app = Flask(__name__)
 
-app.config['TESTING'] = True
+# app.config['TESTING'] = True
 
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['STATIC_AUTO_RELOAD'] = True
-app.config['ALLOW_REUSE_ADDRESS'] = True
-app.run(debug=True)
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# app.config['STATIC_AUTO_RELOAD'] = True
+
+# app.run(debug=True)
 
 
 @app.route('/')
