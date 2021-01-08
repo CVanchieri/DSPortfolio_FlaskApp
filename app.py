@@ -10,9 +10,8 @@ import plotly.graph_objects as go
 # FalconSQL Login https://api.plot.ly/
 
 """Create and configure an instance of the Flask application"""
-
 app = Flask(__name__)
-
+### local development ###
 # app.config['TESTING'] = True
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 # app.config['STATIC_AUTO_RELOAD'] = True
@@ -20,8 +19,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    
     return render_template('home.html')
+
 @app.route('/twitterbot')
 def twitterbot():
     AWSdatabase_TWIT = os.getenv("AWSDATABASE_TWIT")
@@ -29,7 +28,6 @@ def twitterbot():
     AWSpassword_TWIT = os.getenv("AWSPASSWORD_TWIT")
     AWShost_TWIT = os.getenv("AWSHOST_TWIT")
     AWSport_TWIT = os.getenv("AWSPORT_TWIT")
-
     ## connect to AWS database ###
     connection = psycopg2.connect(database=AWSdatabase_TWIT,
                                 user=AWSuser_TWIT,
@@ -37,7 +35,6 @@ def twitterbot():
                                 host=AWShost_TWIT,
                                 port=AWSport_TWIT)
     print("connected to database")
-
     cur = connection.cursor()
 
     sql_select_Query = "select * from tweets_storage" # query all of database 
@@ -104,6 +101,7 @@ def covid19usagraph():
                     df.VentilatorsDailyChange[0], df.DeathsDailyChange[0]]            
     cur.close()
     print("push to html")
+
     return render_template('covid19usagraph.html', today = today, change = today_change)#, yesterday = yesterday)
 
 @app.route('/covid19usadata')
@@ -198,7 +196,7 @@ def australiabushfires():
     fig.show()
 
     print("push to html")
-    return render_template('home.html')
+    return render_template('australiabushfires.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
