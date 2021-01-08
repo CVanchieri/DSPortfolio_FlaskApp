@@ -38,7 +38,7 @@ app.config['TESTING'] = True
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['STATIC_AUTO_RELOAD'] = True
-app.run(debug=True, host='0.0.0.0')
+app.run(debug=True)
 
 @app.route('/')
 def root():
