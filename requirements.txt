@@ -22,8 +22,7 @@ pandas==1.2.0
 parso==0.8.1
 pexpect==4.8.0
 pickleshare==0.7.5
-plotly==4.14.1
-prompt-toolkit==3.0.9
+prompt-toolkit==3.0.10
 psycopg2-binary==2.8.6
 ptyprocess==0.7.0
 Pygments==2.7.3

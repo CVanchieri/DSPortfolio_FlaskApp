@@ -1,10 +1,10 @@
-from flask import Flask, render_template, send_file
+### necessary imports ### 
+from flask import Flask, render_template
 import os
 import psycopg2
 import pandas
 from pandas import DataFrame 
 from IPython.display import HTML
-import plotly.graph_objects as go
 
 
 # FalconSQL Login https://api.plot.ly/
@@ -17,12 +17,15 @@ app = Flask(__name__)
 # app.config['STATIC_AUTO_RELOAD'] = True
 # app.run(debug=True)
 
+### home page ###
 @app.route('/')
 def root():
     return render_template('home.html')
 
+### twitterbot ###
 @app.route('/twitterbot')
 def twitterbot():
+    # get AWS information ### 
     AWSdatabase_TWIT = os.getenv("AWSDATABASE_TWIT")
     AWSuser_TWIT = os.getenv("AWSUSER_TWIT")
     AWSpassword_TWIT = os.getenv("AWSPASSWORD_TWIT")
@@ -34,23 +37,25 @@ def twitterbot():
                                 password=AWSpassword_TWIT,
                                 host=AWShost_TWIT,
                                 port=AWSport_TWIT)
-    print("connected to database")
     cur = connection.cursor()
-
-    sql_select_Query = "select * from tweets_storage" # query all of database 
+    ### query data & organize data ###
+    sql_select_Query = "select * from tweets_storage"
     cur.execute(sql_select_Query)
     data = cur.fetchall()
-    df = DataFrame(data)  # set as dataframe 
-    df.columns = ['id', 'date', 'name', 'text', 'tags'] # label the columns 
+    df = DataFrame(data)
+    df.columns = ['id', 'date', 'name', 'text', 'tags']
     df = df.sort_values('date', ascending=False)
+    ### create HTML table ###
     table = HTML(df.to_html(classes='table table-striped'))
+    ### close connection ### 
     cur.close()
 
     return render_template('twitterbot.html',tables=[table])
 
+### covid 19 USA graph ###
 @app.route('/covid19usagraph')
 def covid19usagraph():
-    ### AWS credentials ###
+    ### get AWS information ###
     AWSdatabase_COVI = os.getenv("AWSDATABASE_COVI")
     AWSuser_COVI = os.getenv("AWSUSER_COVI")
     AWSpassword_COVI = os.getenv("AWSPASSWORD_COVI")
@@ -64,12 +69,11 @@ def covid19usagraph():
                                 port=AWSport_COVI)
     cur = connection.cursor()                           
     print("connected to database")
-    ### SQL query table ###
-    sql_select_Query = "select * from covid19us" # query all of database 
+    ### query data ###
+    sql_select_Query = "select * from covid19us"
     cur.execute(sql_select_Query)
     data = cur.fetchall()
-    df = DataFrame(data)  # set as dataframe 
-    print("pulled data")
+    df = DataFrame(data)
     ### clean and organize data ###
     df.columns = ['Date', 'States', 'TestsToday', 'TestsDailyChange', 'TotalTests', 'PositivesToday', 'PostiviesDailyChange', 'TotalPositives', 
             'NegativesToday', 'NegativesDailyChange', 'TotalNegatives',
@@ -80,6 +84,7 @@ def covid19usagraph():
     df = df.sort_values('Date', ascending=False)     
     df.reset_index(drop=True)       
     pos = lambda x: "+"+str(x) if x>0 else x
+    ### add + to positive values ### 
     df['TestsDailyChange'] = df['TestsDailyChange'].apply(pos)
     df['PostiviesDailyChange'] = df['PostiviesDailyChange'].apply(pos)
     df['NegativesDailyChange'] = df['NegativesDailyChange'].apply(pos)
@@ -98,98 +103,44 @@ def covid19usagraph():
     today = [today_date, "{:,}".format(today_hospitalized), "{:,}".format(today_icu),
                 "{:,}".format(today_ventilators), "{:,}".format(today_deaths)]       
     today_change = [df.HospitalizedDailyChange[0], df.IcuDailyChange[0],
-                    df.VentilatorsDailyChange[0], df.DeathsDailyChange[0]]            
+                    df.VentilatorsDailyChange[0], df.DeathsDailyChange[0]]     
+    ### close connection ###       
     cur.close()
-    print("push to html")
 
     return render_template('covid19usagraph.html', today = today, change = today_change)#, yesterday = yesterday)
 
+### covid 19 USA data ###
 @app.route('/covid19usadata')
 def covid19usadata():
-    ### 
+    ### get AWS information ###
     AWSdatabase_COVI = os.getenv("AWSDATABASE_COVI")
     AWSuser_COVI = os.getenv("AWSUSER_COVI")
     AWSpassword_COVI = os.getenv("AWSPASSWORD_COVI")
     AWShost_COVI = os.getenv("AWSHOST_COVI")
     AWSport_COVI = os.getenv("AWSPORT_COVI")
-
     ## connect to AWS database ###
     connection = psycopg2.connect(database=AWSdatabase_COVI,
                                 user=AWSuser_COVI,
                                 password=AWSpassword_COVI,
                                 host=AWShost_COVI,
                                 port=AWSport_COVI)
-    print("connected to database")
-
     cur = connection.cursor()
-
-    sql_select_Query = "select * from covid19us" # query all of database 
+    ### query and organize data ###
+    sql_select_Query = "select * from covid19us"  
     cur.execute(sql_select_Query)
     data = cur.fetchall()
-    df = DataFrame(data)  # set as dataframe 
-    print("pullled data")
+    df = DataFrame(data)  
     df.columns = ['Date', 'States', 'TestsToday', 'TestsDailyChange', 'TotalTests', 'PositivesToday', 'PostiviesDailyChange', 'TotalPositives', 
             'NegativesToday', 'NegativesDailyChange', 'TotalNegatives',
             'HospitalizedToday', 'HospitalizedDailyChange', 'HospitalizedCurrently', 'TotalHospitalized', 
             'IcuToday', 'IcuDailyChange', 'IcuCurrently', 'TotalIcu', 
             'VentilatorsToday', 'VentilatorsDailyChange', 'VentilatorsCurrently', 'TotalVentilators', 
             'DeathsToday', 'DeathsDailyChange', 'TotalDeaths', 'RecoveredToday', 'RecoveredDailyChange', 'TotalRecovered']
-    print("table created")
+    ### create HTML table ###
     table = HTML(df.to_html(classes='table table-striped'))
+    ### close connection ###
     cur.close()
-    print("push to hml")
+
     return render_template('covid19usadata.html',tables=[table])
 
-@app.route('/australiabushfires')
-def australiabushfires():
-    # read in the csv file.
-    df = pandas.read_csv("https://raw.githubusercontent.com/CVanchieri/DataSets/master/AustraliaBushFires/australiabushfires.csv", index_col=0)
-    table = HTML(df.to_html(classes='table table-striped'))
-    # set the time series and data for frames data.
-
-    print("push to html")
-    return render_template('australiabushfires.html', table = table)
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-    # @app.route('/user', methods=['POST'])
-    # @app.route('/user/<name>', methods=['GET'])
-    # def user(name=None, message=''):
-    #     name = name or request.values['user_name']
-    #     try:
-    #         if request.method == 'POST':
-    #             add_or_update_user(name)
-    #             message = "User {} successfully added!".format(name)
-    #         tweets = User.query.filter(User.name == name).one().tweets
-    #     except Exception as e:
-    #         message = "Error adding {}: {}".format(name, e)
-    #         tweets = []
-    #     return render_template('user.html', title=name, tweets=tweets, message=message)
-
-    # @app.route('/compare', methods=['POST'])
-    # def compare(message=''):
-    #     user1 = request.values['user1']
-    #     user2 = request.values['user2']
-    #     tweet_text = request.values['tweet_text']
-
-    #     if user1 == user2:
-    #         message = 'Cannot compare a user to themselves!'
-    #     else:
-    #         prediction = predict_user(user1, user2, tweet_text)
-    #         message = '"{}" is more likely to be said by {} than {}'.format(
-    #             request.values['tweet_text'], user1 if prediction else user2,
-    #             user2 if prediction else user1)
-    #     return render_template('prediction.html', title='Prediction', message=message)
-
-    # @app.route('/reset')
-    # def reset():
-    #     DB.drop_all()
-    #     DB.create_all()
-    #     return render_template('base.html', title='Reset database!')
-
-    # @app.route('/update')
-    # def update():
-    #     update_all_users()
-    #     return render_template('base.html', users=User.query.all(), title='All Tweets updated!')
 
