@@ -2,16 +2,15 @@
 
 <title>USA Covid-19 Daily Numbers</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-
+<center>
+    <img src="static/CovidBanner.png" alt="CovidBanner">
+</center>
 <h1>Covid-19 USA</h1>
 <div>
   <div> 
     <font color="grey"><font size=3>
       <a href="/covid19usadata"><button type="button" style="height:30px;width:250px">Covid-19 USA Data</button></a>
   </div>
-  <center>
-    <img src="static/CovidBanner.png" alt="CovidBanner">
-   </center>
    <center>
     <font color="grey"><font size=3>
       Date: {{today[0]}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hospitalized Today: {{today[1]}}  <i>Change: {{change[0]}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
