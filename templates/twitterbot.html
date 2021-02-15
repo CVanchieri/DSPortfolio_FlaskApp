@@ -1,10 +1,15 @@
 <!doctype html>
-<title>Tweepy TwitterBot</title>
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
+  <title>Tweepy TwitterBot</title>
   <h1>Data Science Tweets</h1>
   <h2>A TwitterBot that pulls data science tweets daily.</h2>
-  
+  <head>
+    <meta property="og:title" content="A Twitterbot pulling data science hashtags"/>
+    <meta property="og:url" content="https://cvanchieri.github.io/DSPortfolio/Post_TwitterBotAWSLambdaFunction.html"/>
+    <meta name="image" property="og:image" content="https://github.com/CVanchieri/DSPortfolio/blob/master/assets/images/TwitterBot/TwitterBotData.png?raw=true"/>
+  </head>
   {% for table in tables %}
     {{ table|safe }}
   {% endfor %}
