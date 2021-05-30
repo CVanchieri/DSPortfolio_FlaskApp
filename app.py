@@ -143,4 +143,9 @@ def covid19usadata():
 
     return render_template('covid19usadata.html',tables=[table])
 
+### coinscraper ###
+@app.route('/coinscraper')
+def coin_scrape():
+
+    return render_template('coinscraper.html')
 
