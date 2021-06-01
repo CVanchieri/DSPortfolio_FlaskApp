@@ -404,4 +404,4 @@ def coin_scrape_result():
     break1 = datetime.now()
     print("Elapsed time: {0}".format(break1-start)) # show timer
 
-    return render_template('coinscraper.html', data=token_info.items(), tweets=res.items())
+    return render_template('coinscraper.html', data=token_info.items(), tweets=tweet_res.items())
