@@ -13,13 +13,14 @@ h2              { font-size: 1.2em;
                   color: #465880;
                   margin-bottom: 5px;
                   margin-top: 5px; }
-
+             
 div.ex1 {
   background-color: lightblue;
   height: 100px;
   width: 1500px;  
   overflow-y: scroll;       
 }
+
 table.dataframe, .dataframe th, .dataframe td {
   border: none;
   border-bottom: 1px solid #C8C8C8;

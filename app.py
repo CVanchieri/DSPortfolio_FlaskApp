@@ -193,11 +193,11 @@ def coin_scrape_result():
         token_info['token platform'] = platform
         date_added = value['date_added']
         token_info['token date_added'] = date_added
-        is_active = ['is active']
-        if 'is_active' in is_active:
-            token_info['token active'] = 'yes'
+        is_active = value['is_active']
+        if is_active != 1:
+            token_info['token activity'] = 'no'
         else:
-            token_info['token active'] = 'no'
+            token_info['token activity'] = 'yes'
         total_supply = value['total_supply']
         token_info['token total_supply'] = total_supply
         circulating_supply = value['circulating_supply']
@@ -260,7 +260,7 @@ def coin_scrape_result():
         ts_text = b3.select_one('div', class_='sc-16r8icm-0 lpaFj statsLabel___1Mkfd').text
         ts_2text = b3.find('div', class_='sc-16r8icm-0 kkJvVq').div.text
         ts_2perc_text = b3.find('div', class_='supplyBlockPercentage___1g1SF').text
-        token_info['token circulating supply'] = ts_2text, ts_2perc_text
+        token_info['token circulating supply'] = ts_2text#, ts_2perc_text
         ####################
         ### CMC html scrape token stats2 ###
         ####################
