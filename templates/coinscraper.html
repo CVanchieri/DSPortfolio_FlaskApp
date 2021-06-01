@@ -2,7 +2,7 @@
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-  <title>Crypto Token Scraper</title>
+  <title>BS4 Crypto Token Scraper</title>
   <h1>BeautifulSoup Web Scraper</h1>
   <h2>Scraping html pages for crypto token info.</h2>
   <head>
@@ -10,4 +10,17 @@
     <meta property="og:url" content="https://cvanchieri.github.io/DSPortfolio/Post_TwitterBotAWSLambdaFunction.html"/>
     <meta name="image" property="og:image" content="https://github.com/CVanchieri/DSPortfolio/blob/master/assets/images/TwitterBot/TwitterBotData.png?raw=true"/>
   </head>
+</div>
+<div>
+  <form method="POST">
+    Token Symbol: <input name = "user_input"> <br />
+                  <input type = "submit" />
+  </form>
+</div>
+<div>
+ {% for key, val in data %}
+ <tr>
+    {{ key }}: {{ val }} <br />
+ </tr>
+  {% endfor %}
 </div>
