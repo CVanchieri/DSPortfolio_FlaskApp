@@ -5,7 +5,6 @@ import psycopg2
 import pandas
 from pandas import DataFrame 
 from IPython.display import HTML
-import apikey
 import requests
 import re
 from bs4 import BeautifulSoup
@@ -16,10 +15,10 @@ from bs4 import BeautifulSoup
 """Create and configure an instance of the Flask application"""
 app = Flask(__name__)
 ### local development ###
-app.config['TESTING'] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['STATIC_AUTO_RELOAD'] = True
-app.run(debug=True)
+# app.config['TESTING'] = True
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# app.config['STATIC_AUTO_RELOAD'] = True
+# app.run(debug=True)
 
 
 ### home page ###
@@ -168,9 +167,10 @@ def coin_scrape_result():
     x_latest = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     x_meta = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info'
     ### CMC api key ###
+    apikey = os.getenv("CMC_APIKEY")
     headers = {
         'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY' : apikey.cmc_apikey,
+        'X-CMC_PRO_API_KEY' : apikey,
     }
     ### parameters ###
     params = {
