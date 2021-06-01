@@ -33,7 +33,19 @@
   </center>
 </div>
 <div>
+<h2>Token information.</h2>
  {% for key, val in data %}
+ <tr>
+    {{ key }}: {{ val }} <br />
+ </tr>
+  {% endfor %}
+</div>
+<br/>
+<br/>
+<br/>
+<div>
+<h2>Token information.</h2>
+ {% for key, val in tweets %}
  <tr>
     {{ key }}: {{ val }} <br />
  </tr>
