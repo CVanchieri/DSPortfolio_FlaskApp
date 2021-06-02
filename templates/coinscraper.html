@@ -2,13 +2,11 @@
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-  <title>BS4 Crypto Token Scraper</title>
-  <h1>BeautifulSoup Web Scraper</h1>
-  <h2>Scraping html pages for crypto token info.</h2>
+  <title>Crypto Token Scraper</title>
   <head>
-    <meta property="og:title" content="Using BeautifulSoup to scrape html pages for crypto token info."/>
-    <meta property="og:url" content="https://cvanchieri.github.io/DSPortfolio/Post_TwitterBotAWSLambdaFunction.html"/>
-    <meta name="image" property="og:image" content="https://github.com/CVanchieri/DSPortfolio/blob/master/assets/images/TwitterBot/TwitterBotData.png?raw=true"/>
+    <meta property="og:title" content="Crypto Token Scraper."/>
+    <meta property="og:url" content="https://portfolioprojects.herokuapp.com/coinscraper"/>
+    <meta name="image" property="og:image" content="https://personal-financial.com/wp-content/uploads/2020/06/Discover-the-5-Altcoins-that-will-explode-according-to-BlockFyre.jpg?raw=true"/>
   </head>
 </div>
 <br/>
@@ -21,9 +19,9 @@
 <br/>
 <br/>
 <br/>
-<div>
+<div class="boxed_r" >
   <center>
-  <h2>Enter the token's 'slug'.</h2>
+  <h2>Enter the token's symbol.</h2>
   <form method="POST">
                   <input name = "user_input"> <br/>
                   <label for="user_input">e.g.'ADA'</label><br/>
@@ -32,22 +30,25 @@
   </form>
   </center>
 </div>
+<br/>
+<br/>
+<br/>
 <div>
-<h2>Token information.</h2>
  {% for key, val in data %}
- <tr>
-    {{ key }}: {{ val }} <br />
- </tr>
+    <div class="boxed_g">
+    {{ key }}: {{ val }} <br/>
+    </div>
   {% endfor %}
 </div>
 <br/>
 <br/>
 <br/>
-<div>
-<h2>Token information.</h2>
- {% for key, val in tweets %}
- <tr>
-    {{ key }}: {{ val }} <br />
- </tr>
-  {% endfor %}
-</div>
+  <div>
+    {% for key, val in tweets %}
+    <div class="boxed_b">
+      User: {{ key }} <br/>
+      Date: {{ val[0] }} <br/>
+      Tweet: '{{ val[1] }}' <br/>
+    </div>
+    {% endfor %}
+  </div>

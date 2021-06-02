@@ -186,42 +186,42 @@ def coin_scrape_result():
     token_info = {}
     for key, value in coins_query.items():
         name = value['name']
-        token_info['token name'] = name
+        token_info['name'] = name
         symbol = value['symbol']
-        token_info['token symbol'] = symbol
+        token_info['symbol'] = symbol
         slug = value['slug']
-        token_info['token slug'] = slug
+        token_info['slug'] = slug
         platform = value['platform']
-        token_info['token platform'] = platform
+        token_info['platform'] = platform
         date_added = value['date_added']
-        token_info['token date_added'] = date_added
+        token_info['date added'] = date_added
         is_active = value['is_active']
         if is_active != 1:
-            token_info['token activity'] = 'no'
+            token_info['activity'] = 'no'
         else:
-            token_info['token activity'] = 'yes'
+            token_info['activity'] = 'yes'
         total_supply = value['total_supply']
-        token_info['token total_supply'] = total_supply
+        token_info['total supply'] = total_supply
         circulating_supply = value['circulating_supply']
-        token_info['token circulating supply'] = circulating_supply
+        token_info['circulating supply'] = circulating_supply
         market_cap = value['quote']['USD']['market_cap']        
-        token_info['token market cap'] = market_cap
+        token_info['market cap'] = market_cap
         price = value['quote']['USD']['price']
-        token_info['token price'] = price
+        token_info['price'] = price
         volume_24h = value['quote']['USD']['volume_24h']
-        token_info['token volume'] = volume_24h
+        token_info['volume'] = volume_24h
         change_1h = value['quote']['USD']['percent_change_1h']
-        token_info['token change 1hr'] = change_1h
+        token_info['change 1hr'] = change_1h
         change_24h = value['quote']['USD']['percent_change_24h']
-        token_info['token change 24hr'] = change_24h
+        token_info['change 24hr'] = change_24h
         change_7d = value['quote']['USD']['percent_change_7d']
-        token_info['token change 7d'] = change_7d
+        token_info['change 7d'] = change_7d
         change_30d = value['quote']['USD']['percent_change_30d']
-        token_info['token change 30d'] = change_30d
+        token_info['change 30d'] = change_30d
         change_60d = value['quote']['USD']['percent_change_60d']
-        token_info['token change 60d'] = change_60d
+        token_info['change 60d'] = change_60d
         change_90d = value['quote']['USD']['percent_change_90d']
-        token_info['token change 90d'] = change_90d
+        token_info['change 90d'] = change_90d
         ####################
         ### CMC api token urls ###
         ####################
@@ -233,7 +233,7 @@ def coin_scrape_result():
                 logo = value2['logo']
                 for x in value2['urls']['explorer']:
                     token_urls.append(x)
-        token_info['token urls'] = token_urls
+        token_info['source urls'] = token_urls
         ####################
         ### CMC html scrape token stats1 ###
         ####################
@@ -248,21 +248,21 @@ def coin_scrape_result():
             mc1_change.append('-' + block1.select_one('div:nth-child(2)').span.text)
         else: 
             mc1_change.append('+' + block1.select_one('div:nth-child(2)').span.text)
-        token_info['token market cap'] = mc1_2text, mc1_change[0]
+        token_info['market cap'] = mc1_2text, mc1_change[0]
         ################
         ### Volume stats ###
         b2 = bs_cmc1.find('div', class_='hide___2JmAL statsContainer___2uXZW')
         block2 = b2.select_one('div:nth-child(3)')
         v_text = block2.div.div.text
         v_2text = block2.find('div', class_='statsItemRight___yJ5i-').div.text
-        token_info['token volume'] = v_2text
+        token_info['volume'] = v_2text
         ################
         ### Circulating stats ###
         b3 = b2.select_one('div:nth-child(4)')
         ts_text = b3.select_one('div', class_='sc-16r8icm-0 lpaFj statsLabel___1Mkfd').text
         ts_2text = b3.find('div', class_='sc-16r8icm-0 kkJvVq').div.text
         ts_2perc_text = b3.find('div', class_='supplyBlockPercentage___1g1SF').text
-        token_info['token circulating supply'] = ts_2text#, ts_2perc_text
+        token_info['circulating supply'] = ts_2text#, ts_2perc_text
         ####################
         ### CMC html scrape token stats2 ###
         ####################
@@ -277,12 +277,12 @@ def coin_scrape_result():
             tr2td_change.append('-' + tr2.td.div.span.text)
         else: 
             tr2td_change.append('+' + tr2.td.div.span.text)
-        token_info['token price'] = tr2td_text, tr2td_change[0]
+        token_info['price'] = tr2td_text, tr2td_change[0]
         ### 24hr change stats ###
         tr3 = body.select_one('tr:nth-child(3)')
         tr3_text = tr3.th.text
         tr3td_text = tr3.td.text
-        token_info['token 24hr low / high'] = tr3td_text
+        token_info['24hr low / high'] = tr3td_text
         ### Trading volume stats ###
         tr4 = body.select_one('tr:nth-child(4)')
         tr4_text = tr4.th.text
@@ -292,12 +292,12 @@ def coin_scrape_result():
             tr4td_change.append('-' + tr4.td.div.span.text)
         else: 
             tr4td_change.append('+' + tr4.td.div.span.text)
-        token_info['token 24hr volume'] = tr4td_text, tr4td_change[0]
+        token_info['24hr volume'] = tr4td_text, tr4td_change[0]
         ### Market dominance stats ###
         tr5 = body.select_one('tr:nth-child(6)')
         tr5_text = tr5.th.text
         tr5td_text = tr5.td.text
-        token_info['token market dominance'] = tr5td_text
+        token_info['market dominance'] = tr5td_text
         ####################
         ### CMC html scrape token hash ###
         ####################
@@ -320,16 +320,16 @@ def coin_scrape_result():
                     token_hash.append(thash[27:])
                 else:
                     token_hash.append(thash[26:]) 
-        token_info['token hash'] = token_hash[0]
-        token_info['token hash_url'] = hash_url[0]
-        token_info['token platform'] = platform[0]
+        token_info['hash'] = token_hash[0]
+        token_info['hash_url'] = hash_url[0]
+        token_info['platform'] = platform[0]
         ### Token description ###
         token_description = []
         for desc in bs_cmc1.find_all('div', class_='sc-1lt0cju-0 srvSa'):
             if desc.div.text != None:
                 des = desc.div
                 token_description.append(des.text)
-        token_info['token description'] = token_description[0]
+        token_info['description'] = token_description[0]
         ####################
         ### CMC html scrape token articles ###
         ####################
@@ -343,7 +343,7 @@ def coin_scrape_result():
         links = article.find('ul')
         for li in links.find_all('li'):
             token_articles.append([li.a.text, li.a['href']])
-        token_info['token articles'] = token_articles
+        token_info['info articles'] = token_articles
 
     ################################################################
     TWITconsumer_key = os.getenv("TWITCONSUMER_KEY")
@@ -357,7 +357,7 @@ def coin_scrape_result():
     wait_on_rate_limit_notify=True)
 
     tweets = {} # store all ids and tweets
-    days = 1 # set the # of 'past' days to pull tweets from, end date
+    days = 2 # set the # of 'past' days to pull tweets from, end date
     today = datetime.utcnow() # get todays date
     end_date = today - timedelta(days=days) # <-- set the end date
     end_str = end_date.strftime('%m/%d/%Y') # set the end date as str
@@ -365,7 +365,7 @@ def coin_scrape_result():
 
     ### search hashtags ###
     print('--- searching hashtags ---')
-    tags = [token_info['token symbol']]
+    tags = [token_info['symbol'], token_info['slug']]
     for tag in tags: # loop through hashtags
         try:
             print(f'---> hashtag: {tag}')
@@ -373,7 +373,7 @@ def coin_scrape_result():
                                         since=end_str,   
                                         exclude_replies=True,    
                                         lang='en', 
-                                        tweet_mode='extended').items(50):
+                                        tweet_mode='extended').items(100):
                 if status.full_text is not None:
                     text = status.full_text.lower()
 
@@ -386,15 +386,27 @@ def coin_scrape_result():
         except tweepy.TweepError as e: 
             print("Tweepy Error: {}".format(e))
 
-    for key, val in tweets.items(): # loop through dictionary key/values
-        val0, val1, val2 = val # unpack all variables 
-        tags = re.findall("[#]\w+", val2) # get all words starting with '#'.
-        tweets[key] = [val0, val1, val2, tags] # add elements to the dictionary
-
-    tweet_res = {}
+    tweets_temp = {}
     for key, val in tweets.items():
         if 'rt' not in val[2]:
-            tweet_res[key] = val
+            val[2] = val[2].split('http', 1)[0]
+            if ':' in val[2] == 1:
+                val[2] = val[2].split(': ', 1)[1]
+                val[2] = re.sub(r'[!@#$]', '', val[2])
+                val[2] = "".join(val[2].splitlines())
+                tweets_temp[val[1]] = val[0], val[2]
+            else:
+                val[2] = re.sub(r'[!@#$]', '', val[2])
+                val[2] = "".join(val[2].splitlines())
+                tweets_temp[val[1]] = val[0], val[2]
+    temp = []
+    tweets_res = {}
+    for key, val in tweets_temp.items():
+        if val[1][10:20] not in temp:
+            temp.append(val[1][10:20])
+            tweets_res[key] = val
+        else:
+            continue
     
         
     print('--- hashtags tweets ---')
@@ -404,4 +416,4 @@ def coin_scrape_result():
     break1 = datetime.now()
     print("Elapsed time: {0}".format(break1-start)) # show timer
 
-    return render_template('coinscraper.html', data=token_info.items(), tweets=tweet_res.items())
+    return render_template('coinscraper.html', data=token_info.items(), tweets=tweets_res.items())

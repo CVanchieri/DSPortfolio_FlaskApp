@@ -40,6 +40,26 @@ div.block {
   cursor: pointer;
   text-align: center;
 }
+div.boxed_b {
+  background-color: rgb(213, 234, 255);
+  padding: 25px;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.boxed_r {
+  border: 5px solid rgb(215, 89, 89) ;
+  width: 15%;
+  padding: 25px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.boxed_g {
+  background-color: rgb(183, 249, 188);
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 
 tr:nth-child(odd)		{ background-color:#eee; }

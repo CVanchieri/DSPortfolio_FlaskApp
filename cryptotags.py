@@ -22,7 +22,7 @@ start = datetime.now() # set the start date
 
 ### search hashtags ###
 print('--- searching hashtags ---')
-tags = ['xrp']
+tags = ['shib']
 for tag in tags: # loop through hashtags
     try:
         print(f'---> hashtag: {tag}')
@@ -54,3 +54,30 @@ print(f'tweets count: {len(tweets)}') # show tweets count
 print('--- timer ---')
 break1 = datetime.now()
 print("Elapsed time: {0}".format(break1-start)) # show timer
+
+tweets_res = {}
+for key, val in tweets.items():
+    if 'rt' not in val[2]:
+        val[2] = val[2].split('http', 1)[0]
+        if ':' in val[2] != None:
+            val[2] = val[2].split(': ', 1)[1]
+            val[2] = re.sub(r'[!@#$]', '', val[2])
+            val[2] = "".join(val[2].splitlines())
+            tweets_res[val[1]] = val[0], val[2]
+        else:
+            val[2] = re.sub(r'[!@#$]', '', val[2])
+            val[2] = "".join(val[2].splitlines())
+            tweets_res[val[1]] = val[0], val[2]
+temp = []
+res = {}
+for key, val in tweets_res.items():
+    if val[1][10:20] not in temp:
+        temp.append(val[1][10:20])
+        res[key] = val
+    else:
+        continue
+for key, val in res.items():
+    print(key)
+    print(val[0])
+    print(val[1])
+    print('---')
