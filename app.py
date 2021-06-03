@@ -152,11 +152,76 @@ def covid19usadata():
 ### coinscraper ###
 @app.route('/coinscraper')
 def coin_scrape():
-    
-    return render_template('coinscraper.html')
-
+    ####################
+    ### scraping new tokens from CMC html ### 
+    ####################
+    source_new = requests.get(f'https://coinmarketcap.com/new/').text
+    soup_4 = BeautifulSoup(source_new, 'lxml')
+    card_5 = soup_4.find('tbody')
+    print('--- New Release Tokens ---')
+    new_tokens = {}
+    for td in card_5.find_all('tr')[0:10]:
+        token = {}
+        new_num = td.select_one('td:nth-child(2)', style='text').text
+        #token['release #'] = new_num
+        new_name = td.select_one('td:nth-child(3)', style='text').a.div.div.p.text
+        token['name'] = new_name
+        new_symbol = td.select_one('td:nth-child(3)', style='text').a.div.div.div.p.text
+        token['symbol'] = new_symbol
+        new_img = td.select_one('td:nth-child(3)', style='text').a.div.img['src']
+        token['image'] = new_img
+        new_release = td.select_one('td:nth-child(10)', style='text').text
+        token['release date'] = new_release
+        new_price = td.select_one('td:nth-child(4)', style='text').text
+        token['price'] = new_price
+        new_change1hr = td.select_one('td:nth-child(5)', style='text').span.text
+        token['change 1hr'] = new_change1hr
+        new_change24hr = td.select_one('td:nth-child(6)', style='text').span.text
+        token['change 24hr'] = new_change24hr
+        new_volume = td.select_one('td:nth-child(8)', style='text').text
+        token['volume'] = new_volume
+        new_chain = td.select_one('td:nth-child(9)', style='text').div.text
+        token['blockchain'] = new_chain
+        cmc_url = td.select_one('td:nth-child(3)', style='text').a['href']
+        token['cmc url'] = 'https://coinmarketcap.com' + cmc_url
+        new_tokens[new_num] = token
+    return render_template('coinscraper.html', new_token_data=new_tokens)
+####################
 @app.route('/coinscraper', methods = ['POST'])
 def coin_scrape_result():
+    ####################
+    ### scraping new tokens from CMC html ### 
+    ####################
+    source_new = requests.get(f'https://coinmarketcap.com/new/').text
+    soup_4 = BeautifulSoup(source_new, 'lxml')
+    card_5 = soup_4.find('tbody')
+    print('--- New Release Tokens ---')
+    new_tokens = {}
+    for td in card_5.find_all('tr')[0:10]:
+        token = {}
+        new_num = td.select_one('td:nth-child(2)', style='text').text
+        #token['release #'] = new_num
+        new_name = td.select_one('td:nth-child(3)', style='text').a.div.div.p.text
+        token['name'] = new_name
+        new_symbol = td.select_one('td:nth-child(3)', style='text').a.div.div.div.p.text
+        token['symbol'] = new_symbol
+        new_img = td.select_one('td:nth-child(3)', style='text').a.div.img['src']
+        token['image'] = new_img
+        new_release = td.select_one('td:nth-child(10)', style='text').text
+        token['release date'] = new_release
+        new_price = td.select_one('td:nth-child(4)', style='text').text
+        token['price'] = new_price
+        new_change1hr = td.select_one('td:nth-child(5)', style='text').span.text
+        token['change 1hr'] = new_change1hr
+        new_change24hr = td.select_one('td:nth-child(6)', style='text').span.text
+        token['change 24hr'] = new_change24hr
+        new_volume = td.select_one('td:nth-child(8)', style='text').text
+        token['volume'] = new_volume
+        new_chain = td.select_one('td:nth-child(9)', style='text').div.text
+        token['blockchain'] = new_chain
+        cmc_url = td.select_one('td:nth-child(3)', style='text').a['href']
+        token['cmc url'] = 'https://coinmarketcap.com' + cmc_url
+        new_tokens[new_num] = token
     ####################
     ### pulling token data from CMC api ###
     ####################
@@ -244,10 +309,12 @@ def coin_scrape_result():
         mc1_text = block1.div.text
         mc1_2text = block1.select_one('div:nth-child(2)').div.text
         mc1_change = []
-        if '-' in mc1_2text:
-            mc1_change.append('-' + block1.select_one('div:nth-child(2)').span.text)
-        else: 
-            mc1_change.append('+' + block1.select_one('div:nth-child(2)').span.text)
+        if change_24h != 0:
+            if '-' in mc1_2text:
+                mc1_change.append('-' + block1.select_one('div:nth-child(2)').span.text)
+            else: 
+                mc1_change.append('+' + block1.select_one('div:nth-child(2)').span.text)
+
         token_info['market cap'] = mc1_2text, mc1_change[0]
         ################
         ### Volume stats ###
@@ -271,13 +338,13 @@ def coin_scrape_result():
         ### Price stats ###
         tr2 = body.select_one('tr:nth-child(2)')
         tr2_text = tr2.th.text
-        tr2td_text = tr2.td.span.text
-        tr2td_change = []
-        if '-' in tr2td_text:
-            tr2td_change.append('-' + tr2.td.div.span.text)
-        else: 
-            tr2td_change.append('+' + tr2.td.div.span.text)
-        token_info['price'] = tr2td_text, tr2td_change[0]
+        # tr2td_text = tr2.td.span.text
+        # tr2td_change = []
+        # if '-' in tr2td_text:
+        #     tr2td_change.append('-' + tr2.td.div.span.text)
+        # else: 
+        #     tr2td_change.append('+' + tr2.td.div.span.text)
+        token_info['price'] = tr2_text#, tr2td_change[0]
         ### 24hr change stats ###
         tr3 = body.select_one('tr:nth-child(3)')
         tr3_text = tr3.th.text
@@ -287,12 +354,12 @@ def coin_scrape_result():
         tr4 = body.select_one('tr:nth-child(4)')
         tr4_text = tr4.th.text
         tr4td_text = tr4.td.text
-        tr4td_change = []
-        if '-' in tr4td_text:
-            tr4td_change.append('-' + tr4.td.div.span.text)
-        else: 
-            tr4td_change.append('+' + tr4.td.div.span.text)
-        token_info['24hr volume'] = tr4td_text, tr4td_change[0]
+        # tr4td_change = []
+        # if '-' in tr4td_text:
+        #     tr4td_change.append('-' + tr4.td.div.span.text)
+        # else: 
+        #     tr4td_change.append('+' + tr4.td.div.span.text)
+        token_info['24hr volume'] = tr4td_text#, tr4td_change[0]
         ### Market dominance stats ###
         tr5 = body.select_one('tr:nth-child(6)')
         tr5_text = tr5.th.text
@@ -416,4 +483,4 @@ def coin_scrape_result():
     break1 = datetime.now()
     print("Elapsed time: {0}".format(break1-start)) # show timer
 
-    return render_template('coinscraper.html', data=token_info.items(), tweets=tweets_res.items())
+    return render_template('coinscraper.html', token_data=token_info.items(), tweets_data=tweets_res.items(), new_token_data=new_tokens)

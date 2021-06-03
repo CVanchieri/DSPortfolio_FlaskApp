@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
+<div class='page'>
   <title>Crypto Token Scraper</title>
   <head>
     <meta property="og:title" content="Crypto Token Scraper."/>
@@ -11,6 +11,19 @@
 </div>
 <br/>
 <br/>
+  <h3> *** Newly Released Tokens *** </h3>
+<div = class='flex-container'>
+{% for key, val in new_token_data.items() %}
+  <div class="flex-child">
+    Release #: {{key}} </br>
+    Name: {{val['name']}} </br>
+    Symbol: {{val['symbol']}} </br>
+    Image: <img src="{{val['image']}}" alt="token_image"> </br>
+    Released: {{val['release date']}}
+    </div>
+    {% endfor %}
+    </div>
+  </div>
 <br/>
 <br/>
 <br/>
@@ -19,7 +32,7 @@
 <br/>
 <br/>
 <br/>
-<div class="boxed_r" >
+<div class="boxed_rb" >
   <center>
   <h2>Enter the token's symbol.</h2>
   <form method="POST">
@@ -34,7 +47,7 @@
 <br/>
 <br/>
 <div>
- {% for key, val in data %}
+ {% for key, val in token_data %}
     <div class="boxed_g">
     {{ key }}: {{ val }} <br/>
     </div>
@@ -44,7 +57,7 @@
 <br/>
 <br/>
   <div>
-    {% for key, val in tweets %}
+    {% for key, val in tweets_data %}
     <div class="boxed_b">
       User: {{ key }} <br/>
       Date: {{ val[0] }} <br/>

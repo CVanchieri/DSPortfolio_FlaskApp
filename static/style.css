@@ -47,10 +47,15 @@ div.boxed_b {
   margin-right: auto;
 }
 div.boxed_r {
-  border: 5px solid rgb(215, 89, 89) ;
+  background-color: rgb(239, 145, 145);
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.boxed_rb {
+  border: 5px solid #555555;
+  padding: 5px;
   width: 15%;
-  padding: 25px;
-  text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
@@ -60,6 +65,18 @@ div.boxed_g {
   margin-left: auto;
   margin-right: auto;
 }
+
+div.flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+div.flex-child {
+  flex: 0;
+  border: 2px solid rgb(233, 126, 126);
+  flex-basis: 12em;
+  margin-right: 20px;
+}  
 
 
 tr:nth-child(odd)		{ background-color:#eee; }
