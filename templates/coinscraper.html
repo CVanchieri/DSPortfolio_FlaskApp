@@ -16,9 +16,9 @@
 {% for key, val in new_token_data.items() %}
   <div class="flex-child">
     Release #: {{key}} </br>
-    Name: {{val['name']}} </br>
-    Symbol: {{val['symbol']}} </br>
-    Image: <img src="{{val['image']}}" alt="token_image"> </br>
+    {{val['name']}} </br>
+    Symbol: {{val['symbol']}} </br> </br>
+    <center> <img src="{{val['image']}}" alt="token_image"> </center> </br> 
     Released: {{val['release date']}}
     </div>
     {% endfor %}

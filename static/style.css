@@ -72,10 +72,10 @@ div.flex-container {
 }
 
 div.flex-child {
-  flex: 0;
+  flex: 1;
   border: 2px solid rgb(233, 126, 126);
-  flex-basis: 12em;
-  margin-right: 20px;
+  flex-basis: 15em;
+  margin-right: 10px;
 }  
 
 
