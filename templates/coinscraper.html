@@ -15,10 +15,13 @@
 <div = class='flex-container'>
 {% for key, val in new_token_data.items() %}
   <div class="flex-child">
-    Release #: {{key}} </br>
+    # {{key}} </br>
+    <center>
     {{val['name']}} </br>
-    Symbol: {{val['symbol']}} </br> </br>
-    <center> <img src="{{val['image']}}" alt="token_image"> </center> </br> 
+    ({{val['symbol']}}) </br> </br>
+    <img src="{{val['image']}}" alt="token_image"> </br> 
+    </br> 
+    </center>
     Released: {{val['release date']}}
     </div>
     {% endfor %}
