@@ -350,16 +350,17 @@ def coin_scrape_result():
         ### CMC html scrape token stats2 ###
         ####################
         coin_scrape_stats = coin_stats2.find('div', class_='sc-16r8icm-0 jIZLYs container___E9axz')
-        body = coin_scrape_stats.find('tbody')
-        ### 24hr change stats ###
-        chang24r = body.select_one('tr:nth-child(3)')
-        chang24r_numbers = chang24r.td.text
-        token_info['24hr low / high'] = chang24r_numbers
-        # print(token_info['24hr low / high']) ##
-        ### Market dominance stats ###
-        market_dominance = body.select_one('tr:nth-child(6)')
-        market_dominance_numbers = market_dominance.td.text
-        token_info['market dominance'] = market_dominance_numbers
+        if coin_scrape_stats != None:
+            body = coin_scrape_stats.find('tbody')
+            ### 24hr change stats ###
+            chang24r = body.select_one('tr:nth-child(3)')
+            chang24r_numbers = chang24r.td.text
+            token_info['24hr low / high'] = chang24r_numbers
+            # print(token_info['24hr low / high']) ##
+            ### Market dominance stats ###
+            market_dominance = body.select_one('tr:nth-child(6)')
+            market_dominance_numbers = market_dominance.td.text
+            token_info['market dominance'] = market_dominance_numbers
         # print(token_info['market dominance']) ## 
         ####################
         ### CMC html scrape token hash ###
@@ -396,11 +397,14 @@ def coin_scrape_result():
         # print(token_info['platform']) ##
         ### Token description ###
         token_description = []
-        for desc in coins_hash.find_all('div', class_='sc-1lt0cju-0 srvSa'):
-            if desc.div.text != None:
-                des = desc.div
-                token_description.append(des.text)
-        token_info['description'] = token_description[0]
+        if coins_hash.find_all('div', class_='sc-1lt0cju-0 srvSa') != None:
+            for desc in coins_hash.find_all('div', class_='sc-1lt0cju-0 srvSa'):
+                # if desc.div.text != 0:
+                    des = desc.div
+                    if des != None:
+                        token_description.append(des.text)
+            if len(token_description) > 0:
+                token_info['description'] = token_description[0]
         # print(token_info['description']) ##
         ####################
         ### CMC html scrape token articles ###
@@ -410,16 +414,17 @@ def coin_scrape_result():
         source_articles = requests.get(f'https://coinmarketcap.com/currencies/{url_name}').text
         coins_articles = BeautifulSoup(source_articles, 'lxml')
         block1 = coins_articles.find('div', class_='sc-16r8icm-0 elzRBB container')
-        block1_1 = block1.find('div', class_='sc-16r8icm-0 feGaPs desktopShow___2995-')
-        article = block1_1.find('div', class_='alexandriaArticles___2__ss')
-        links = article.find('ul')
-        for li in links.find_all('li'):
-            token_articles.append([li.a.text, li.a['href']])
-        token_info['info articles'] = token_articles
-        # for val in token_info['info articles']:
-        #     print(val[0]) ##
-        #     print(val[1]) ##
-        #     print('-----') ## 
+        if block1 != None:
+            block1_1 = block1.find('div', class_='sc-16r8icm-0 feGaPs desktopShow___2995-')
+            article = block1_1.find('div', class_='alexandriaArticles___2__ss')
+            links = article.find('ul')
+            for li in links.find_all('li'):
+                token_articles.append([li.a.text, li.a['href']])
+            token_info['info articles'] = token_articles
+            # for val in token_info['info articles']:
+            #     print(val[0]) ##
+            #     print(val[1]) ##
+            #     print('-----') ## 
     for key, val in token_info.items():
         print(f'{key}: {val}')
     print('-----')
@@ -511,4 +516,52 @@ def coin_scrape_result():
         print(f'{key}: {val}')
         print('-----')
 
-    return render_template('coinscraper.html', token_data=token_info.items(), tweets_data=tweets_res.items(), new_token_data=new_tokens)
+
+    ######################
+    CLIENT_ID = 'T9wY5Ulq8tLW6w'
+    SECRET_KEY ='L7eznyEuLAotFRL_HADO0m9t6mg6WA'
+    auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
+    data = {
+            'grant_type': 'password',
+            'username': 'GnarlyCharley6',
+            'password': 'Charryn84',
+            }
+    headers = {'User-Agent': 'MyAPI/0.0.1'}
+    print('--- searching reddit posts ---')
+    res = requests.post('https://www.reddit.com/api/v1/access_token', 
+                        auth=auth, data=data, headers=headers)
+    TOKEN = res.json()['access_token']
+    headers = {**headers, **{'Authorization': f'bearer {TOKEN}'}}
+    # print(headers)
+    # print(requests.get('https://oauth.reddit.com/api/v1/me', headers=headers).json())
+    slug = 'cardano'
+    sub_posts = {}
+    sub_res2 = requests.get('https://oauth.reddit.com/r/' + token_slug + '/new', 
+                    headers=headers)
+    if sub_res2.json() != None:
+        for post in sub_res2.json()['data']['children'][:10]:
+            # print(sub_res2.json())
+            # subreddit = post['data']['subreddit']
+            # if symbol in post['data']['title'] != None:
+            title = post['data']['title']
+            for k, v in post.items():
+                if 'selftext' in v:
+                    text = post['data']['selftext']
+                    text = "".join(text.splitlines())
+                    text = re.sub(r'[&@#]', '', text)
+                    score = post['data']['score']
+                    # posts.append([text, ups, downs, score])
+                    sub_posts[title] = [text, score]
+            # print(f'title: {title}')
+            # print(f'text: {text}')
+            # print(f'score: {score}')
+            # print('-----')
+            # print(post)
+
+    print('--- posts found ---')
+    print(f'posts count: {len(sub_posts)}') # show tweets count
+    for k, v in sub_posts.items():
+        print(f'{k}: {v}')
+        print('-----')
+
+    return render_template('coinscraper.html', token_data=token_info.items(), tweets_data=tweets_res.items(), reddit_data=sub_posts.items(), new_token_data=new_tokens)

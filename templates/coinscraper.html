@@ -68,3 +68,15 @@
     </div>
     {% endfor %}
   </div>
+<br/>
+<br/>
+<br/>
+  <div>
+    {% for key, val in reddit_data %}
+    <div class="boxed_r">
+      Title: {{ key }} <br/>
+      Text: {{ val[0] }} <br/>
+      Score: '{{ val[1] }}' <br/>
+    </div>
+    {% endfor %}
+  </div>
