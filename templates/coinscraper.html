@@ -52,9 +52,36 @@
 <div>
  {% for key, val in token_data %}
     <div class="boxed_g">
-    {{ key }}: {{ val }} <br/>
+    {{ key }}:  {{ val }}<br/>
+    <br/>
     </div>
   {% endfor %}
+</div>
+<br/>
+<div>
+ {% for key, val in token_holder %}
+    ** TOKEN HOLDER INFO ** <br/>
+    <br/>
+    <div class="boxed_g">
+    Description: {{ val[2] }} <br/>
+    Holders: {{ val[0] }} <br/>
+    Breakdown: {{ val[3] }} <br/>
+    Website: {{ val[1] }} 
+    </div>
+  {% endfor %}
+</div>
+<div>
+ {% for key, val in top_holders %}
+    <div class="boxed_g">
+    Rank: {{ key }} <br/>
+    Name: {{ val[0] }} <br/>
+    URL: {{ val[1] }} <br/>
+    Count: {{ val[3] }} <br/>
+    Percent: {{ val[4] }} <br/>
+    Exchange: {{ val[5] }} <br/>
+    </div>
+  {% endfor %}
+</div>
 </div>
 <br/>
 <br/>
@@ -64,7 +91,7 @@
     <div class="boxed_b">
       User: {{ key }} <br/>
       Date: {{ val[0] }} <br/>
-      Tweet: '{{ val[1] }}' <br/>
+      Tweet: {{ val[1] }} <br/>
     </div>
     {% endfor %}
   </div>
@@ -75,8 +102,8 @@
     {% for key, val in reddit_data %}
     <div class="boxed_r">
       Title: {{ key }} <br/>
-      Text: {{ val[0] }} <br/>
-      Score: '{{ val[1] }}' <br/>
+      Post: {{ val[0] }} <br/>
+      Score: {{ val[1] }} <br/>
     </div>
     {% endfor %}
   </div>

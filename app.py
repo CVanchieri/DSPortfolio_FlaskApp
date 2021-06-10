@@ -308,47 +308,6 @@ def coin_scrape_result():
         url_name = name.replace(' ', '-')
         source_stats2 = requests.get(f'https://coinmarketcap.com/currencies/{url_name}').text
         coin_stats2 = BeautifulSoup(source_stats2, 'lxml')
-        # block1 = coin_stats2.find('div', class_='statsBlock___11SXA').div
-        # block1_2 = block1.select_one('div:nth-child(2)')
-        # marketcap_number = block1_2.div.text
-        # if block1_2.span is not None:
-        #     marketcap_change = block1_2.span.text
-        # else:
-        #     marketcap_change = 'No data'
-        # print(marketcap_number) ##
-        # print(marketcap_change) ##
-        # token_info['market cap number'] = marketcap_number
-        # token_info['market cap change'] = marketcap_change
-        # print(token_info['market cap number']) ##
-        # print(token_info['market cap change']) ##
-        # print('-----') ##
-        # ################
-        # ### Volume stats ###
-        # block2 = coin_stats2.find('div', class_='hide___2JmAL statsContainer___2uXZW')
-        # block2_2 = block2.select_one('div:nth-child(3)')
-        # change = block2_2.find('div', class_='statsItemRight___yJ5i-').span
-        # volume_number = block2_2.find('div', class_='statsItemRight___yJ5i-').div.text
-        # if change.span is not None:
-        #     volume_change = change.text
-        # else:
-        #     volume_change = 'No data'
-        # print(volume_number) ##
-        # print(volume_change) ##
-        # token_info['volume number'] = volume_number
-        # token_info['volume change'] = volume_change
-        # print(token_info['volume number']) ##
-        # print(token_info['volume change']) ##
-        # print('-----') ##
-        # ################
-        # ### Circulating stats ###
-        # block3 = block2.select_one('div:nth-child(4)')
-        # ts_2text = block3.find('div', class_='sc-16r8icm-0 kkJvVq').div.text
-        # token_info['circulating_supply'] = ts_2text
-        # print(token_info['circulating_supply'])
-        # print(token_info['circulating supply'])
-        ####################
-        ### CMC html scrape token stats2 ###
-        ####################
         coin_scrape_stats = coin_stats2.find('div', class_='sc-16r8icm-0 jIZLYs container___E9axz')
         if coin_scrape_stats != None:
             body = coin_scrape_stats.find('tbody')
@@ -373,7 +332,6 @@ def coin_scrape_result():
         coins_hash = BeautifulSoup(source_hash, 'lxml')
         ### Token hash ###
         for head in coins_hash.find_all('div', class_='sc-16r8icm-0 dOJIkS container___2dCiP contractsRow'):
-
             if 'Con' in head.div.text:
                 content = head.find('div', class_= 'content___MhX1h')
                 thash = content.div.a['href']
@@ -406,29 +364,103 @@ def coin_scrape_result():
             if len(token_description) > 0:
                 token_info['description'] = token_description[0]
         # print(token_info['description']) ##
+##########################
+    print('--- scraping holders info ---')
+    token_holder_info = {}
+    top_holders = {}
+    if 'bsc' in token_info['hash_url']:
+        source_info = requests.get(f'https://bscscan.com/token/{token_info["hash"]}').text
+        source_holders = requests.get(f'https://bscscan.com/token/tokenholderchart/{token_info["hash"]}').text
+        source_description = requests.get(f'https://bscscan.com/token/{token_info["hash"]}#tokenInfo').text
+        soup_1 = BeautifulSoup(source_info, 'lxml')
+        soup_2 = BeautifulSoup(source_holders, 'lxml')
+        soup_3 = BeautifulSoup(source_description, 'lxml')
+        overview = soup_1.find('div', class_='row mb-4')
         ####################
-        ### CMC html scrape token articles ###
+        card_4 = soup_3.find('div', id='ContentPlaceHolder1_maintab')
+        token = overview.find('div', class_='font-weight-medium').b.text
+        description = card_4.find('div', id='tokenInfo').div.text
+        description = description.split('MarketVolume', 1)
+        description = description[0]
+        description = description[9:]
+        supply = overview.find('span', class_='hash-tag text-truncate').text
+        c_supply = overview.find('span', class_='text-secondary ml-1').text
+        num_holders = overview.find('div', class_='mr-3').text
+        num_holders = num_holders[1:-3]
         ####################
-        url_name = name.replace(' ', '-')
-        token_articles = []
-        source_articles = requests.get(f'https://coinmarketcap.com/currencies/{url_name}').text
-        coins_articles = BeautifulSoup(source_articles, 'lxml')
-        block1 = coins_articles.find('div', class_='sc-16r8icm-0 elzRBB container')
-        if block1 != None:
-            block1_1 = block1.find('div', class_='sc-16r8icm-0 feGaPs desktopShow___2995-')
-            article = block1_1.find('div', class_='alexandriaArticles___2__ss')
-            links = article.find('ul')
-            for li in links.find_all('li'):
-                token_articles.append([li.a.text, li.a['href']])
-            token_info['info articles'] = token_articles
-            # for val in token_info['info articles']:
-            #     print(val[0]) ##
-            #     print(val[1]) ##
-            #     print('-----') ## 
-    for key, val in token_info.items():
-        print(f'{key}: {val}')
+        url = []
+        for card in soup_1.find_all('div', class_='col-md-6'):
+            if card.find('h2', class_='card-header-title') != None and card.find('div', class_='col-md-4').text == 'Contract:':
+                contract = card.find('a', class_='text-truncate d-block mr-2').text
+                url_t = card.find('div', id='ContentPlaceHolder1_tr_officialsite_1')
+                url_t = url_t.find('div', class_='col-md-8').a['href']
+                url.append(url_t)
+        ####################
+        card_2 = soup_2.find('div', id='ContentPlaceHolder1_resultrows')
+        ta = soup_2.find('div', class_='mb-0').p.text[1:-1]
+        ta = ta.replace('token', 'tokens')
+        desc_1 = ta.replace('tokenss', 'tokens')
+        card_3 = soup_2.find('div', class_='card-header py-4')
+        # desc_2 = blockchair_url.split('.com/', 1)
+        # token_name = name[1].upper()
+        token_holder_info[token] = [num_holders, url[0], description, desc_1]
+        #########################
+        for addre in card_2.find_all('tr')[:6]:
+            rank = []
+            holder = []
+            hash = []
+            holder_hash = []
+            holder_hash_url = []
+            exchange = []
+            quantity = []
+            percentage = []
+
+            if addre.select_one('td:nth-child(1)') != None:
+                rank.append(addre.select_one('td:nth-child(1)').contents[0])
+
+                holder_name = addre.select_one('td:nth-child(2)').span
+                hash_t = holder_name.a['href']
+                hash.append(re.sub(r'^.*?=', '=', hash_t))
+
+                holder_hash_t = hash[0][1:]
+                holder_hash.append(holder_hash_t)
+                holder_hash_url.append('https://bscscan.com/address/' + holder_hash[0])
+
+                if ': ' in holder_name.a.text:
+                    exch, nam = holder_name.a.text.split(':')
+                    exchange.append(exch)
+                    holder.append(nam)
+
+                    quant = addre.select_one('td:nth-child(3)').contents[0]
+                    quantity.append(quant)
+
+                    perc = addre.select_one('td:nth-child(4)').contents[0]
+                    percentage.append(perc)
+
+                    top_holders[rank[0]] = [holder[0], holder_hash[0], holder_hash_url[0], quantity[0], percentage[0], exchange[0]]
+                else:
+                    no_exchange = 'Exchange: Missing'
+                    exchange.append(no_exchange)
+
+                    nam = holder_name.a.text
+                    holder.append(nam)
+
+                    quant = addre.select_one('td:nth-child(3)').contents[0]
+                    quantity.append(quant)
+
+                    perc = addre.select_one('td:nth-child(4)').contents[0]
+                    percentage.append(perc)
+
+                    top_holders[rank[0]] = [holder[0], holder_hash[0], holder_hash_url[0], quantity[0], percentage[0], exchange[0]]
+
+    for k, v in token_holder_info.items():
+        print(f'{k}: {v}')
+        print('-----')
     print('-----')
-    #########################
+    for k, v in top_holders.items():
+        print(f'{k}: {v}')
+        print('-----')
+##########################
     TWITconsumer_key = os.getenv("TWITCONSUMER_KEY")
     TWITconsumer_secret = os.getenv("TWITCONSUMER_SECRET")
     TWITaccess_token = os.getenv("TWITACCESS_TOKEN")
@@ -534,7 +566,6 @@ def coin_scrape_result():
     headers = {**headers, **{'Authorization': f'bearer {TOKEN}'}}
     # print(headers)
     # print(requests.get('https://oauth.reddit.com/api/v1/me', headers=headers).json())
-    slug = 'cardano'
     sub_posts = {}
     sub_res2 = requests.get('https://oauth.reddit.com/r/' + token_slug + '/new', 
                     headers=headers)
@@ -563,5 +594,6 @@ def coin_scrape_result():
     for k, v in sub_posts.items():
         print(f'{k}: {v}')
         print('-----')
+####################
 
-    return render_template('coinscraper.html', token_data=token_info.items(), tweets_data=tweets_res.items(), reddit_data=sub_posts.items(), new_token_data=new_tokens)
+    return render_template('coinscraper.html', token_data=token_info.items(), token_holder=token_holder_info.items(), top_holders=top_holders.items(), tweets_data=tweets_res.items(), reddit_data=sub_posts.items(), new_token_data=new_tokens)

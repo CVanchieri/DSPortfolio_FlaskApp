@@ -231,6 +231,40 @@ for key, value in coins_stats.items():
             token_description.append(des.text)
     token_info['description'] = token_description[0]
     # print(token_info['description']) ##
+    #########################
+    if 'bsc' in hash_url:
+        source_info = requests.get(f'https://bscscan.com/token/{token_hash[0]}').text
+        source_holders = requests.get(f'https://bscscan.com/token/tokenholderchart/{token_hash[0]}').text
+        source_description = requests.get(f'https://bscscan.com/token/{token_hash[0]}#tokenInfo').text
+        soup_1 = BeautifulSoup(source_info, 'lxml')
+        soup_2 = BeautifulSoup(source_holders, 'lxml')
+        soup_3 = BeautifulSoup(source_description, 'lxml')
+        overview = soup_1.find('div', class_='row mb-4')
+    ####################
+        card_4 = soup_3.find('div', id='ContentPlaceHolder1_maintab')
+        token = overview.find('div', class_='font-weight-medium').b.text
+        description = card_4.find('div', id='tokenInfo').div.text
+        description = description.split('MarketVolume', 1)
+        description = description[0]
+        supply = overview.find('span', class_='hash-tag text-truncate').text
+        c_supply = overview.find('span', class_='text-secondary ml-1').text
+        holders = overview.find('div', class_='mr-3').text
+    ####################
+        for card in soup_1.find_all('div', class_='col-md-6'):
+            if card.find('h2', class_='card-header-title') != None and card.find('div', class_='col-md-4').text == 'Contract:':
+                    contract = card.find('a', class_='text-truncate d-block mr-2').text
+                    url = card.find('div', id='ContentPlaceHolder1_tr_officialsite_1')
+                    url = url.find('div', class_='col-md-8').a['href']
+    ####################
+        card_2 = soup_2.find('div', id='ContentPlaceHolder1_resultrows')
+        ta = soup_2.find('div', class_='mb-0').p.text[1:-1]
+        ta = ta.replace('token', 'tokens')
+        ta = ta.replace('tokenss', 'tokens')
+        card_3 = soup_2.find('div', class_='card-header py-4')
+        header2 = card_3.find('div', class_='col-md-6').text
+        name = blockchair_url.split('.com/', 1)
+        token_name = name[1].upper()
+        token_info['holders'] = holders
     ####################
     ### CMC html scrape token articles ###
     ####################
@@ -252,6 +286,7 @@ for key, value in coins_stats.items():
 for key, val in token_info.items():
     print(f'{key}: {val}')
 print('-----')
+
 #########################
 TWITconsumer_key = os.getenv("TWITCONSUMER_KEY")
 TWITconsumer_secret = os.getenv("TWITCONSUMER_SECRET")
