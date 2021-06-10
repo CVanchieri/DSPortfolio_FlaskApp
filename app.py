@@ -550,9 +550,9 @@ def coin_scrape_result():
 
 
     ######################
-    CLIENT_ID = 'T9wY5Ulq8tLW6w'
-    SECRET_KEY ='L7eznyEuLAotFRL_HADO0m9t6mg6WA'
-    auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
+    REDclient_id = os.getenv("RED_CLIENT_ID")
+    REDsecret_key = os.getenv("RED_SECRET_KEY")
+    auth = requests.auth.HTTPBasicAuth(REDclient_id, REDsecret_key)
     data = {
             'grant_type': 'password',
             'username': 'GnarlyCharley6',
