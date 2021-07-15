@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class='page'>
+  <title>Artist Analyzer</title>
+  <head>
+    <meta property="og:title" content="Artist Analyzer."/>
+    <meta property="og:url" content="https://portfolioprojects.herokuapp.com/artistanalyzer"/>
+    <meta name="image" property="og:image" content="https://media.istockphoto.com/photos/yellow-headphones-on-yellow-background-music-concept-picture-id962214590?k=6&m=962214590&s=170667a&w=0&h=uJiIjID-oqSLi4bSICnuCLzVnJppxRFpeSfLuNUpQmM="/>
+  </head>
+</div>
+<br/>
+<div class="boxed_rb" >
+  <center>
+  <h2>Enter the Artist or Band name.</h2>
+  <form method="POST">
+                  <input name = "user_input"> <br/>
+                  <label for="user_input">e.g.'Bob Marley'</label><br/>
+                  <br/>
+                  <input type = "submit" />
+  </form>
+  </center>
+</div>
+
+<br/>
+<br/>
+  <h3> *** Artist Info *** </h3>
+<div = class='flex-container'>
+{% for table in tables %}
+    {{ table|safe }}
+  {% endfor %}
+
+  </div>

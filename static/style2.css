@@ -78,12 +78,31 @@ div.flex-child {
   margin-right: 10px;
 }  
 
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  line-height: 10px;
+
+  max-width: auto;
+  max-height: auto;
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKtQ1K91NDsOtVoVJEyAL3wIu5ZePonTkDw&usqp=CAU");
+  background-size: contain;
+  background-position: center;
+ 
+  -webkit-background-clip: text; 
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0);
+  overflow: hidden;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+}
+body {
+  background: black;
+ }
+
 tr:nth-child(odd)		{ background-color:#eee; }
 tr:nth-child(even)	{ background-color:#fff; }
 
 tr:hover            { background-color: #ffff99;}
-
-body {
-  background: rgb(255, 255, 255);
-
- }

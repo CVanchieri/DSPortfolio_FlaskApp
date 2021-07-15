@@ -16,6 +16,10 @@ lxml = "*"
 regex = "*"
 tweepy = "*"
 datetime = "*"
+gensim = "*"
+counter = "*"
+vadersentiment = "*"
+python-levenshtein = "*"
 
 [dev-packages]
 
