@@ -25,7 +25,7 @@ app = Flask(__name__)
 app.config['TESTING'] = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['STATIC_AUTO_RELOAD'] = True
-app.run(debug=True)
+# app.run(debug=True)
 
 def check_auth(username, password):
     """This function is called to check if a username /
