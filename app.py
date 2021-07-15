@@ -802,22 +802,35 @@ def artistanalyzer_result():
             val_ = ['Neutral']
             pol_list.append(val_)
     df['+/-'] = pol_list
+    df = df[df['Song Text'] != 'We do not have the lyrics for soon come yet']
     table = HTML(df.to_html(classes='table table-striped'))
     pos_out = df['+/-'].mode()
+    total_pol = pos_out[0][0]
+    artist_name = df["Artist Name"][0]
+    num_songs = len(df)
+    num_words = df["Num Words"].sum()
+    longest_song = long_song[0]
+    longestword_count = df['Num Words'].max()
+    dict_data = {'Artist Name':artist_name, 
+                'Number of Songs':num_songs, 
+                'Number of Words':num_words, 
+                'Longest Song':longest_song, 
+                'Longest Song Word Count':longestword_count, 
+                "Artist's Overall Polarity":total_pol}
     ### data frame ###
     # print(df.shape)
     # print(df.head())
-    print(f'Artist Name: {df["Artist Name"][0]}')
-    print(f'Total number of songs: {len(df)}')
-    print(f'Total Number of Words: {df["Num Words"].sum()}')
-    print(f'Song with most words: {long_song[0]}, word count: {length_song}')
-    print(pos_out[0][0])
+    print(f'Artist Name: {artist_name}')
+    print(f'Total number of songs: {num_songs}')
+    print(f'Total Number of Words: {num_words}')
+    print(f'Song with most words: {longest_song}, word count: {longestword_count}')
+    print(f'Overall polarity: {total_pol}')
     print('-----')
     #### finish timer ###
     print('--- runtime ---')
     break1 = datetime.now()
     print("Elapsed time: {0}".format(break1-start)) # show timer
     
-    return render_template('artistanalyzer.html', tables=[table])
+    return render_template('artistanalyzer.html', tables=[table], data=dict_data.items())
 
 

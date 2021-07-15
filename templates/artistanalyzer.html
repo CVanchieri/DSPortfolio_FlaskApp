@@ -21,10 +21,18 @@
   </form>
   </center>
 </div>
-
 <br/>
 <br/>
-  <h3> *** Artist Info *** </h3>
+<div>
+    <br/>
+    <div class="boxed_r">
+    {% for key, val in data %}
+    {{ key }}:  {{ val }}<br/>
+    {% endfor %}
+    </div>
+</div>
+<br/>
+<br/>
 <div = class='flex-container'>
 {% for table in tables %}
     {{ table|safe }}
