@@ -1,0 +1,55 @@
+.dialogbox{
+    color: #fff;
+    border-radius: 8px;
+    font-size: x-large;
+    width: auto;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    background-color: #949292;
+
+}
+
+.user {
+    float: left;
+    clear: both;
+    background-color: #1ae836;
+}
+
+.bot {
+    float: right;
+    clear: both;
+    background-color: #949292;
+}
+
+#user_query {
+    width: 90%;
+}
+
+#botbox{
+    flex:0.9;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+#botform{
+    flex:0.1;
+}
+
+
+.container {
+    border: 2px solid rgb(230, 224, 224);
+    height: 700px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+h1              { color: #814444;
+    margin: 0;
+    margin-bottom: 5px;
+    margin-top: 5px; 
+    text-align: center}
+h2              { color: #000000;
+    margin: 0;
+    margin-bottom: 5px;
+    margin-top: 5px; }

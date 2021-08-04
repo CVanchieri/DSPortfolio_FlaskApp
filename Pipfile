@@ -20,6 +20,9 @@ gensim = "*"
 counter = "*"
 vadersentiment = "*"
 python-levenshtein = "*"
+numpy = "*"
+sklearn = "*"
+tensorflow = "*"
 
 [dev-packages]
 

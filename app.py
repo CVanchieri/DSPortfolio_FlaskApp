@@ -1,5 +1,6 @@
 ### necessary imports ### 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, Response
+from assistant import check
 import os
 import psycopg2
 import pandas as pd
@@ -15,16 +16,15 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from gensim.parsing.preprocessing import remove_stopwords
 from collections import Counter
 from functools import wraps
-from flask import request, Response
 
 # FalconSQL Login https://api.plot.ly/
 
 """Create and configure an instance of the Flask application"""
 app = Flask(__name__)
 ### local development ###
-app.config['TESTING'] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['STATIC_AUTO_RELOAD'] = True
+# app.config['TESTING'] = True
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# app.config['STATIC_AUTO_RELOAD'] = True
 # app.run(debug=True)
 
 def check_auth(username, password):
@@ -581,11 +581,13 @@ def coin_scrape_result():
     ######################
     REDclient_id = os.getenv("RED_CLIENT_ID")
     REDsecret_key = os.getenv("RED_SECRET_KEY")
+    REDusername = os.getenv("RED_USERNAME")
+    REDpassword = os.getenv("RED_PASSWORD")
     auth = requests.auth.HTTPBasicAuth(REDclient_id, REDsecret_key)
     data = {
             'grant_type': 'password',
-            'username': 'GnarlyCharley6',
-            'password': 'Charryn84',
+            'username': REDusername,
+            'password': REDpassword,
             }
     headers = {'User-Agent': 'MyAPI/0.0.1'}
     print('--- searching reddit posts ---')
@@ -833,4 +835,23 @@ def artistanalyzer_result():
     
     return render_template('artistanalyzer.html', tables=[table], data=dict_data.items())
 
+################################
+@app.route("/chat_home", methods=['GET', 'POST'])
+def chat_home():
+    # if request.method == 'POST':
+    #     user_query = request.form['user_query']
+    #     print(user_query)
+    #     user_query = user_query.strip()
+    #     result = check(user_query)
+    #     return render_template('index.html', response=result, user_query=user_query)
+    return render_template('chatbot.html')
 
+
+@app.route("/chat", methods=['GET', 'POST'])
+def chat():
+    user_query = request.json
+    #print(user_query)
+    user_query = user_query['name']
+    result = check(user_query)
+    #print(result)
+    return jsonify(result)
