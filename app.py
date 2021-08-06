@@ -1,6 +1,5 @@
 ### necessary imports ### 
 from flask import Flask, render_template, request, jsonify, Response
-from assistant import check
 import os
 import psycopg2
 import pandas as pd
@@ -834,24 +833,3 @@ def artistanalyzer_result():
     print("Elapsed time: {0}".format(break1-start)) # show timer
     
     return render_template('artistanalyzer.html', tables=[table], data=dict_data.items())
-
-################################
-@app.route("/chat_home", methods=['GET', 'POST'])
-def chat_home():
-    # if request.method == 'POST':
-    #     user_query = request.form['user_query']
-    #     print(user_query)
-    #     user_query = user_query.strip()
-    #     result = check(user_query)
-    #     return render_template('index.html', response=result, user_query=user_query)
-    return render_template('chatbot.html')
-
-
-@app.route("/chat", methods=['GET', 'POST'])
-def chat():
-    user_query = request.json
-    #print(user_query)
-    user_query = user_query['name']
-    result = check(user_query)
-    #print(result)
-    return jsonify(result)
