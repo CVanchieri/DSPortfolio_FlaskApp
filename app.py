@@ -1,5 +1,5 @@
 ### necessary imports ### 
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, Response
 import os
 import psycopg2
 import pandas as pd
@@ -10,7 +10,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import tweepy
-import random
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from gensim.parsing.preprocessing import remove_stopwords
 from collections import Counter
@@ -628,87 +627,6 @@ def coin_scrape_result():
     return render_template('coinscraper.html', token_data=token_info.items(), token_holder=token_holder_info.items(), top_holders=top_holders.items(), tweets_data=tweets_res.items(), reddit_data=sub_posts.items(), new_token_data=new_tokens)
 
     ####################
-    ### text image creator ###
-@app.route('/textimage')
-def text_image():
-    
-    return render_template('textimageentry.html')
-
-@app.route('/textimage', methods = ['POST'])
-@requires_auth
-def text_image2():
-    # user_input = "jay z"
-    user_input = request.form['user_input']
-    user_input = user_input.replace(' ', '-')
-    user_input = user_input.replace(' ', '')
-
-    ### start timer ###
-    start = datetime.now()
-
-    ### scraping song links ###
-    print('--- scraping song links ---')
-    source = requests.get(f'https://www.songlyrics.com/{user_input}-lyrics/').text
-    soup = BeautifulSoup(source, 'lxml')
-    songlist = soup.find('div', class_='listbox')
-    tracklist = songlist.find('table', class_='tracklist').tbody
-    song_links = []
-    artist_details = []
-    for song in tracklist.find_all('tr', itemprop="itemListElement"):
-        if song.td.text in [str(x) for x in range(200 + 1)]:
-            link = song.find('a')['href']
-            if link not in song_links:
-                song_links.append(link)
-
-    ### collecting song details ###
-    print('--- scraping song details text ---')
-    for val in song_links:
-        song_title = val[27:-1].split('/', 1)[1]
-        song_title = song_title[:-6].replace('-', ' ').capitalize()
-        artist_name = user_input.replace('-', ' ').capitalize()
-
-    ### scraping song text ###
-        songsource = requests.get(val).text
-        soup2 = BeautifulSoup(songsource, 'lxml')
-        block = soup2.find('div', id='songLyricsContainer')
-        if block.find('p').text != False:
-            text = block.find('p').text
-            permitted = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-            songtext = text.lower()
-            songtext = ' '.join(word for word in songtext.split() if word[0]!='[')
-            songtext = songtext.replace("\n", " ").strip()
-            songtext = "".join(c for c in songtext if c in permitted)
-            songtext = songtext.replace("    ", " ")
-            songtext = songtext.replace("   ", " ")
-            songtext = songtext.replace("  ", " ")
-            artist_details.append(songtext)
-
-    print('--- combining song text ---')
-    textblock = ' '.join([str(w) for w in random.sample(artist_details, len(artist_details))])
-    textblock = textblock * 2
-    print('--- length of text ---')
-    print(len(textblock))
-    # textblock = '. '.join(artist_details)
-    print(f'songs = {len(artist_details)}')
-    print(len(textblock))
-    print(textblock)
-
-    #### finish timer ###
-    print('--- runtime ---')
-    break1 = datetime.now()
-    print("Elapsed time: {0}".format(break1-start)) # show timer
-    
-    # text = ''' 
-    # you want more want more you think its the end but its just the beginning you think its the end but its just the beginning go down backbiter down backbite down backbiter down backbite down backbiter down backbiter down backbiter down backbite they stab you in the back and they claim that youre not looking but jah have them in the region in the valley of decision they stab you in the back and they claim that youre not looking but jah have em in the region in the valley of decision in the valley of decision go down backbiter down backbite down backbiter down backbite now you get what you want do you want more now you get what you want do you want more now you get what you want do you want more you think its the end ado you do you want more go down backbiter down backbite down backbiter down backbite down backbiter down backbite down backbiter down backbite they stab you in the back stab you in the back and they claim that youre not looking claim that youre not looking but jah have them in the region jah have them in the region in the valley of decision now what you want want more want more now what you get want more want more now now do you want more you think its the end you think its the end do you want more want more you think its the end now what you want want more want more now what you get want more want more hey happy people this here is something new i know youre gonna like it so let me tell you what were gonna do souls almighty dont you know we got the rhythm souls almighty we are willing funky funky chicken and the mashed potato do the alligator lets do it together souls almighty do you dig me yall souls almighty my soul is raw get yourself together in any kind of weather things will be mighty better if you get it together souls almighty dont you know we got the rhythm souls almighty get yourself yourself together in any kind of weather things will be mighty better if we if we get it together souls dont you know we got the rhythm hit it brother souls almighty o baby when youre not with him funky funky chicken and the mashed potato do the alligator do it together yall shocks of souls and shocks souls and shocks we got we got we got the rhythm sing your song brother my babys with him ooh get yourself together in any kind of weather things will be mighty better do it twice you know that i love you baby but you just wont let me you know that i love you baby but you just wont let me every morning i get up i sip my cup my eyes get red noone to hear me one more thing id like to say right here baby but you just wont let me one more thing id like to say right here baby but y
-    # '''
-    # permitted = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-    # text = text.replace("\n", " ").strip()
-    # text = "".join(c for c in text if c in permitted)
-    # text = text.replace("    ", " ")
-    # text = text.replace("   ", " ")
-    # text = text.replace("  ", " ")
-    # text = text.lower()
-    # textblock = text * 1000
-    return render_template('textimagedone.html', text=textblock)
 
 @app.route('/artistanalyzer')
 def artistanalyzer():
