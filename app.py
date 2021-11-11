@@ -26,9 +26,9 @@ import sys
 app = Flask(__name__, template_folder='templates')
 #### local development ####
 # app.config['TESTING'] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['STATIC_AUTO_RELOAD'] = True
-app.run(debug=True)
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# app.config['STATIC_AUTO_RELOAD'] = True
+# app.run(debug=True)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 
