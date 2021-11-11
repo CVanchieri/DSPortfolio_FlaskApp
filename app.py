@@ -23,10 +23,10 @@ import time
 """Create and configure an instance of the Flask application"""
 app = Flask(__name__, template_folder='templates')
 #### local development ####
-app.config['TESTING'] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['STATIC_AUTO_RELOAD'] = True
-app.run(debug=True)
+# app.config['TESTING'] = True
+# app.config['TEMPLATES_AUTO_RELOAD'] = True
+# app.config['STATIC_AUTO_RELOAD'] = True
+# app.run(debug=True)
 
 def check_auth(username, password):
     """This function is called to check if a username /
