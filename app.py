@@ -17,6 +17,8 @@ from functools import wraps
 import dateparser
 import cloudscraper
 import time
+import logging
+import sys
 
 # FalconSQL Login https://api.plot.ly/
 
@@ -27,6 +29,8 @@ app = Flask(__name__, template_folder='templates')
 # app.config['TEMPLATES_AUTO_RELOAD'] = True
 # app.config['STATIC_AUTO_RELOAD'] = True
 # app.run(debug=True)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 def check_auth(username, password):
     """This function is called to check if a username /
