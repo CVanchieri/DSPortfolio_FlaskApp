@@ -25,10 +25,10 @@ import sys
 """Create and configure an instance of the Flask application"""
 app = Flask(__name__, template_folder='templates')
 #### local development ####
-# app.config['TESTING'] = True
-# app.config['TEMPLATES_AUTO_RELOAD'] = True
-# app.config['STATIC_AUTO_RELOAD'] = True
-# app.run(debug=True)
+app.config['TESTING'] = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['STATIC_AUTO_RELOAD'] = True
+app.run(debug=True)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 
@@ -767,9 +767,9 @@ def etherscanscraper():
 @app.route('/etherscanscraper', methods=['POST'])
 def etherscanscraper_result():
     # hash_input = "0x5FFA235A2478A1e3E1b01CC1EE968Bee915351AF"
-    user_input = request.form['user_input']
-    user_input = user_input.replace(' ', '-')
-    user_input = user_input.replace(' ', '')
+    # user_input = request.form['user_input']
+    # user_input = user_input.replace(' ', '-')
+    # user_input = user_input.replace(' ', '')
 
     ### start timer ###
     start = datetime.now()
@@ -777,7 +777,7 @@ def etherscanscraper_result():
     ### scraping song links ###
     print('--- Etherscan.io Scraper ---')
     print("----------------")
-    # user_input = "0x5FFA235A2478A1e3E1b01CC1EE968Bee915351AF"
+    user_input = "0x5FFA235A2478A1e3E1b01CC1EE968Bee915351AF"
     scraper = cloudscraper.create_scraper()
 
     ### hash overview scraper ###
