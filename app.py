@@ -763,9 +763,9 @@ def etherscanscraper():
 @app.route('/etherscanscraper', methods=['POST'])
 def etherscanscraper_result():
     # hash_input = "0x5FFA235A2478A1e3E1b01CC1EE968Bee915351AF"
-    # user_input = request.form['user_input']
-    # user_input = user_input.replace(' ', '-')
-    # user_input = user_input.replace(' ', '')
+    user_input = request.form['user_input']
+    user_input = user_input.replace(' ', '-')
+    user_input = user_input.replace(' ', '')
 
     ### start timer ###
     start = datetime.now()
@@ -773,7 +773,7 @@ def etherscanscraper_result():
     ### scraping song links ###
     print('--- Etherscan.io Scraper ---')
     print("----------------")
-    user_input = "0x5FFA235A2478A1e3E1b01CC1EE968Bee915351AF"
+    # user_input = "0x5FFA235A2478A1e3E1b01CC1EE968Bee915351AF"
     scraper = cloudscraper.create_scraper()
 
     ### hash overview scraper ###
