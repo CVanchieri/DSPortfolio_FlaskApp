@@ -21,8 +21,6 @@ counter = "*"
 vadersentiment = "*"
 python-levenshtein = "*"
 numpy = "*"
-cloudscraper = "*"
-dateparser = "*"
 
 [dev-packages]
 
