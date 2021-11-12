@@ -14,8 +14,6 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from gensim.parsing.preprocessing import remove_stopwords
 from collections import Counter
 from functools import wraps
-import dateparser
-import cloudscraper
 
 # FalconSQL Login https://api.plot.ly/
 
