@@ -30,7 +30,7 @@ Jinja2==3.0.2
 joblib==1.0.1
 keras-nightly==2.5.0.dev2021032900
 Keras-Preprocessing==1.1.2
-lxml==4.6.3
+lxml==4.9.1
 Markdown==3.3.4
 MarkupSafe==2.0.1
 matplotlib-inline==0.1.3
